@@ -58,6 +58,7 @@ export default function VoiceChatScreen() {
     };
 
     recognition.onresult = (event) => {
+      console.log("[Debug] onresult fired", event.results);
       console.log("[Voice] onresult fired", event.results);
       let interim = "";
       let final = "";
@@ -76,6 +77,14 @@ export default function VoiceChatScreen() {
       }
     };
 
+    recognition.onnomatch = () => {
+      console.log("[Debug] no speech match");
+    };
+    
+    recognition.onaudioend = () => {
+      console.log("[Debug] audio ended");
+    };
+    
     recognition.onerror = (event) => {
       if (event.error === "no-speech") {
         setStatus("idle");
@@ -205,18 +214,34 @@ export default function VoiceChatScreen() {
     }
   }, [history, speak]);
 
+  // const startListening = () => {
+  //   if (!recognitionRef.current) return;
+  //   window.speechSynthesis.cancel();
+  //   setTranscript("");
+  //   setError(null);
+  //   setStatus("listening");
+  //   try {
+  //     recognitionRef.current.start();
+  //   } catch {
+  //     // already started
+  //   }
+  // };
   const startListening = () => {
-    if (!recognitionRef.current) return;
-    window.speechSynthesis.cancel();
-    setTranscript("");
-    setError(null);
-    setStatus("listening");
-    try {
-      recognitionRef.current.start();
-    } catch {
-      // already started
-    }
-  };
+  if (!recognitionRef.current) {
+    console.log("[Debug] recognition tidak ada");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  setTranscript("");
+  setError(null);
+  setStatus("listening");
+  try {
+    recognitionRef.current.start();
+    console.log("[Debug] recognition.start() dipanggil");
+  } catch(e) {
+    console.log("[Debug] error start:", e.message);
+  }
+};
 
   const stopListening = () => {
     if (!recognitionRef.current) return;
