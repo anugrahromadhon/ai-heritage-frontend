@@ -65,18 +65,18 @@ export default function App() {
       // const aiText = data.content?.map((c) => c.text || "").join("") || "Maaf, saya tidak dapat memproses permintaan ini saat ini.";
 
       // INI DIPAKAI SEMISAL BACKENDNYA BEDA WEB
-      // const response = await fetch("ai-heritage-backend-production.up.railway.app", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ message: text, history: [] }),
-      // });
-
-      // INI DIPAKAI KALAU HOSTING DI TEMPAT YG SM
-      const response = await fetch("/api/chat", {
+      const response = await fetch("https://ai-heritage-backend-production.up.railway.app/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history: history.slice(-6) }),
+        body: JSON.stringify({ message: text, history: [] }),
       });
+
+      // INI DIPAKAI KALAU HOSTING DI TEMPAT YG SM
+      // const response = await fetch("/api/chat", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ message: text, history: history.slice(-6) }),
+      // });
       
       const data = await response.json();
       const aiText = data.text || "Maaf, tidak dapat memproses saat ini.";
