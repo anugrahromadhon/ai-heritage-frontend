@@ -50,6 +50,7 @@ export default function App() {
     setInputText("");
     setIsLoading(true);
     try {
+      // INI DIPAKAI KALAU MAU CEK DI LOKAL
       // const response = await fetch("http://localhost:3001/api/chat", {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
@@ -62,11 +63,21 @@ export default function App() {
       // });
       // const data = await response.json();
       // const aiText = data.content?.map((c) => c.text || "").join("") || "Maaf, saya tidak dapat memproses permintaan ini saat ini.";
-      const response = await fetch("ai-heritage-backend-production.up.railway.app", {
+
+      // INI DIPAKAI SEMISAL BACKENDNYA BEDA WEB
+      // const response = await fetch("ai-heritage-backend-production.up.railway.app", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ message: text, history: [] }),
+      // });
+
+      // INI DIPAKAI KALAU HOSTING DI TEMPAT YG SM
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history: [] }),
+        body: JSON.stringify({ message: text, history: history.slice(-6) }),
       });
+      
       const data = await response.json();
       const aiText = data.text || "Maaf, tidak dapat memproses saat ini.";
       setMessages((prev) => [...prev, { id: Date.now() + 1, role: "ai", text: aiText }]);
