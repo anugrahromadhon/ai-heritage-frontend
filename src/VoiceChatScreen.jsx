@@ -205,6 +205,7 @@ export default function VoiceChatScreen() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history: history.slice(-6) }),
       });
+      
       if (!response.ok) throw new Error("Server error");
 
       const data = await response.json();
