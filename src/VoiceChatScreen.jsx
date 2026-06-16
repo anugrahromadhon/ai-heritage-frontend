@@ -8,7 +8,7 @@ const TEXT_MID = "#5C5C5C";
 const BORDER_COLOR = "#E0E0E0";
 
 // const BACKEND_URL = "http://localhost:3001";
-const BACKEND_URL = "";
+const BACKEND_URL = "https://ai-heritage-backend-production.up.railway.app/";
 
 
 // Conversation states: "idle" | "listening" | "thinking" | "speaking"
@@ -191,20 +191,20 @@ export default function VoiceChatScreen() {
     setHistory(newHistory);
 
     try {
-      // const response = await fetch(`${BACKEND_URL}/api/chat`, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     message: text,
-      //     history: history.slice(-6), // keep last 6 turns for context
-      //   }),
-      // });
-
-      const response = await fetch("/api/chat", {
+      const response = await fetch(`${BACKEND_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history: history.slice(-6) }),
+        body: JSON.stringify({
+          message: text,
+          history: history.slice(-6), // keep last 6 turns for context
+        }),
       });
+
+      // const response = await fetch("/api/chat", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ message: text, history: history.slice(-6) }),
+      // });
       
       if (!response.ok) throw new Error("Server error");
 
