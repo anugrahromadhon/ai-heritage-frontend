@@ -62,7 +62,7 @@ export default function App() {
       // });
       // const data = await response.json();
       // const aiText = data.content?.map((c) => c.text || "").join("") || "Maaf, saya tidak dapat memproses permintaan ini saat ini.";
-      const response = await fetch("http://localhost:3001/api/chat", {
+      const response = await fetch("ai-heritage-backend-production.up.railway.app", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history: [] }),
