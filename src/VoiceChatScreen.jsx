@@ -135,28 +135,30 @@ export default function VoiceChatScreen() {
       const voices = window.speechSynthesis.getVoices();
 
       if (lang === "id-ID") {
-        // Urutan prioritas: cari voice Indonesia terbaik
+        // Prioritas: Google Bahasa Indonesia (perempuan, natural)
         const idVoice =
-          voices.find((v) => v.lang === "id-ID" && v.localService) ||
+          voices.find((v) => v.name === "Google Bahasa Indonesia") ||
+          voices.find((v) => v.lang === "id-ID" && !v.localService) ||
           voices.find((v) => v.lang === "id-ID") ||
           voices.find((v) => v.lang.startsWith("id")) ||
-          // Fallback: Malay mirip secara fonetik dengan Indonesia
-          voices.find((v) => v.lang === "ms-MY") ||
-          voices.find((v) => v.lang.startsWith("ms")) ||
           null;
-
         if (idVoice) {
           utterance.voice = idVoice;
           console.log("[TTS] Using voice:", idVoice.name, idVoice.lang);
         } else {
-          console.warn("[TTS] No id-ID voice found, using browser default");
+          console.warn("[TTS] No id-ID voice found");
         }
       } else {
+        // Untuk English — hindari Microsoft David/Mark (laki-laki)
+        // Pilih Google UK English Female atau Zira
         const enVoice =
-          voices.find((v) => v.lang === "en-US" && v.localService) ||
-          voices.find((v) => v.lang === "en-US") ||
+          voices.find((v) => v.name === "Google UK English Female") ||
+          voices.find((v) => v.name === "Microsoft Zira - English (United States)") ||
+          voices.find((v) => v.lang === "en-GB" && v.name.toLowerCase().includes("female")) ||
+          voices.find((v) => v.lang === "en-US" && !v.localService) ||
           null;
         if (enVoice) utterance.voice = enVoice;
+        console.log("[TTS] EN voice:", enVoice?.name);
       }
 
       utterance.onstart = () => setStatus("speaking");
