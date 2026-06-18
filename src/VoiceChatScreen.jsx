@@ -8,7 +8,8 @@ const TEXT_MID = "#5C5C5C";
 const BORDER_COLOR = "#E0E0E0";
 
 // const BACKEND_URL = "http://localhost:3001";
-const BACKEND_URL = "https://ai-heritage-backend-production.up.railway.app/";
+// const BACKEND_URL = "https://ai-heritage-backend-production.up.railway.app/";
+const BACKEND_URL = "";
 
 
 // Conversation states: "idle" | "listening" | "thinking" | "speaking"
@@ -23,6 +24,7 @@ export default function VoiceChatScreen() {
 
   const recognitionRef = useRef(null);
   const utteranceRef = useRef(null);
+  const handleUserSpeechRef = useRef(null);
 
   // Init speech recognition once
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function VoiceChatScreen() {
     console.log("[Voice] speechSynthesis available:", !!window.speechSynthesis);
 
     if (!SpeechRecognition || !window.speechSynthesis) {
-      setSupported(false);
+      setTimeout(() => setSupported(false), 1000);
       return;
     }
 
@@ -73,7 +75,7 @@ export default function VoiceChatScreen() {
       setTranscript(final || interim);
 
       if (final) {
-        handleUserSpeech(final.trim());
+        handleUserSpeechRef.current?.(final.trim());
       }
     };
 
@@ -191,20 +193,20 @@ export default function VoiceChatScreen() {
     setHistory(newHistory);
 
     try {
+      // const response = await fetch(`${BACKEND_URL}/api/chat`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     message: text,
+      //     history: history.slice(-6), // keep last 6 turns for context
+      //   }),
+      // });
+
       const response = await fetch(`${BACKEND_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          history: history.slice(-6), // keep last 6 turns for context
-        }),
+        body: JSON.stringify({ message: text, history: history.slice(-6) }),
       });
-
-      // const response = await fetch("/api/chat", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ message: text, history: history.slice(-6) }),
-      // });
       
       if (!response.ok) throw new Error("Server error");
 
@@ -214,11 +216,15 @@ export default function VoiceChatScreen() {
       setAiText(reply);
       setHistory([...newHistory, { role: "assistant", text: reply }]);
       speak(reply, lang);
-    } catch (err) {
+    } catch  {
       setError("Tidak dapat terhubung ke server. Pastikan backend berjalan.");
       setStatus("idle");
     }
   }, [history, speak]);
+  // Sync handleUserSpeech terbaru ke ref
+  useEffect(() => {
+    handleUserSpeechRef.current = handleUserSpeech;
+  }, [handleUserSpeech]);
 
   // const startListening = () => {
   //   if (!recognitionRef.current) return;
