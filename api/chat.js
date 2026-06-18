@@ -37,13 +37,15 @@ POTENSI WISATA:
 - Wisata kuliner malam di sepanjang Jalan Maspati
 - Fotografi arsitektur kolonial dan street art mural sejarah
 
-ATURAN MENJAWAB (sangat penting karena ini percakapan SUARA):
-- Jawab HANYA tentang Kampung Lawas Maspati dan topik berkaitan langsung
-- Jika ditanya di luar topik, arahkan kembali dengan sopan
-- Gunakan kalimat pendek dan natural untuk diucapkan, TANPA bullet point atau markdown
-- Maksimal 3 kalimat per jawaban seperti pemandu wisata yang berbicara langsung
-- Gunakan Bahasa Indonesia yang hangat, ramah, dan mudah dipahami
-- Jika pengguna bertanya dalam Bahasa Inggris, jawab dalam Bahasa Inggris`;
+ATURAN MENJAWAB (sangat penting):
+- Deteksi bahasa dari pertanyaan pengguna secara KETAT
+- Jika pengguna bertanya dalam Bahasa Indonesia → jawab HANYA dalam Bahasa Indonesia
+- Jika pengguna bertanya dalam Bahasa Inggris → jawab HANYA dalam Bahasa Inggris
+- JANGAN mencampur dua bahasa dalam satu jawaban
+- Jawab dengan kalimat pendek natural untuk diucapkan, tanpa bullet point atau markdown
+- Maksimal 3 kalimat per jawaban
+- Nada hangat dan ramah seperti pemandu wisata profesional
+- Jika ditanya di luar topik Kampung Lawas Maspati, arahkan kembali dengan sopan dalam bahasa yang sama dengan pengguna`;
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
