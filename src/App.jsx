@@ -110,8 +110,8 @@ export default function App() {
           {activeScreen === "map" ? (
             <MapScreen locations={MAP_LOCATIONS} onPinTap={setSelectedLocation} />
           ) : (
-            // <VoiceChatScreen />
-            <ChatScreen messages={messages} inputText={inputText} setInputText={setInputText} onSend={handleSend} isLoading={isLoading} messagesEndRef={messagesEndRef} suggestions={SUGGESTED_QUESTIONS} onSuggest={handleSuggest} />
+            <VoiceChatScreen />
+            // <ChatScreen messages={messages} inputText={inputText} setInputText={setInputText} onSend={handleSend} isLoading={isLoading} messagesEndRef={messagesEndRef} suggestions={SUGGESTED_QUESTIONS} onSuggest={handleSuggest} />
           )}
         </div>
 
