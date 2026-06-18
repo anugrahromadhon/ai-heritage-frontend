@@ -190,7 +190,7 @@ export default function VoiceChatScreen() {
     setStatus("thinking");
     setError(null);
 
-    const lang = detectLanguage(text);
+    const lang = "id-ID"; // selalu Indonesia  
     const newHistory = [...history, { role: "user", text }];
     setHistory(newHistory);
 
